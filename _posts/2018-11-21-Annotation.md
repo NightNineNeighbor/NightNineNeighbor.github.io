@@ -120,3 +120,39 @@ class NewClass{...}
 * 예외 선언 불가
 * 요소를 타입에 타입 매개변수 불가 ex)ArrayList<T>
 
+## 예제
+
+```java
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface MyAnnotation {
+    String strValue();
+    int intValue();
+}
+```
+
+```java
+public class MyService {
+    @MyAnnotation(strValue = "hi", intValue = 0607)
+    public void printSomething(){
+        System.out.println("test my annotation");
+    }
+}
+```
+
+
+```java
+public static void main(String[] args) throws Exception{
+    Method[] methods = Class.forName(MyService.class.getName()).getMethods();
+
+    for (int i = 0; i < methods.length; i++) {
+        if (methods[i].isAnnotationPresent(MyAnnotation.class)) {
+            MyAnnotation an = methods[i].getAnnotation(MyAnnotation.class);
+
+            System.out.println("my annotation str value:" + an.strValue());
+            System.out.println("my annotation int value:" + an.intValue());q
+        }
+    }
+}
+```
+
